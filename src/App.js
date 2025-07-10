@@ -29,7 +29,7 @@ function App() {
                 {/* Rutas privadas */}
                 <Route
                     path="/administracion"
-                    element={<PublicRoute> <Admin /> </PublicRoute>}
+                    element={<PrivateRoute> <Admin /> </PrivateRoute>}
                 >
                     <Route index element={<h3>Inicio</h3>}/>
                     <Route path='clientes' element={<Clientes/>}/>
