@@ -5,11 +5,36 @@ import "../styles/estilos-login.css"
 function Login () {
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        navigate("/administracion");
-    }
+        const correo = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            const response = await fetch("http://localhost:3307/api/entrenador/loginEntrenador", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ correo, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                //Guarda el token y redirige
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("trainerName", data.trainer.nombre);
+                alert("Bienvenido, " + data.trainer.nombre);
+                navigate("/administracion");
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            alert("Error de conexión con el servidor.");
+        }
+    };
+
 
     return (
         <div className="login-container">
