@@ -1,96 +1,153 @@
-import React from "react";
-import '../styles/perfil.css';
+import React, { useState, useEffect } from "react";
+import { useClientes } from "../api/perfil";
+import enfermedadesJSON from "../data/enfermedades.json";
+import restriccionesJSON from "../data/restricciones.json";
+import "../styles/perfil.css";
 
 function Perfil() {
+    const { clientes, loading, error } = useClientes();
+    const [clienteSeleccionado, setClienteSeleccionado] = useState("");
+    const [formData, setFormData] = useState({
+        edad: "",
+        genero: "",
+        altura: "",
+        peso: "",
+        cintura: "",
+        tipo_cuerpo: "",
+        nivel_actividad: "",
+        objetivo: "",
+        restricciones_comida: [],
+        enfermedades: [],
+        imc: ""
+    });
+
+        useEffect(() => {
+    const alturaCm = parseFloat(formData.altura);
+    const peso = parseFloat(formData.peso);
+
+    if (!isNaN(alturaCm) && !isNaN(peso) && alturaCm > 0) {
+        const alturaM = alturaCm / 100; // 🔁 conversión cm ➝ m
+        const imcCalculado = peso / (alturaM * alturaM);
+        console.log("Altura (m):", alturaM, "Peso:", peso, "IMC:", imcCalculado);
+        setFormData((prev) => ({ ...prev, imc: imcCalculado.toFixed(2) }));
+    } else {
+        setFormData((prev) => ({ ...prev, imc: "" }));
+    }
+}, [formData.altura, formData.peso]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleCheckboxChange = (e, key) => {
+        const { value, checked } = e.target;
+        setFormData((prev) => {
+            const values = new Set(prev[key]);
+            checked ? values.add(value) : values.delete(value);
+            return { ...prev, [key]: Array.from(values) };
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const datosConCliente = {
+            cliente_id: clienteSeleccionado,
+            ...formData
+        };
+        console.log("Datos a enviar:", datosConCliente);
+    };
+
     return (
         <div className="container-fluid">
             <div className="form-container">
-                <h2 className="form-title">Datos Físicos y Objetivo</h2>
-                <form id="formPerfil">
-                    {/* Contenedor row para las columnas */}
+                <h2 className="form-title">Perfil de Cliente</h2>
+
+                {loading ? (
+                    <p>Cargando clientes...</p>
+                ) : error ? (
+                    <p>Error al cargar clientes</p>
+                ) : (
+                    <div className="mb-3">
+                        <label className="form-label">Seleccionar cliente registrado</label>
+                        <select
+                            className="form-select"
+                            value={clienteSeleccionado}
+                            onChange={(e) => setClienteSeleccionado(e.target.value)}
+                            required
+                        >
+                            <option value="">-- Selecciona un cliente --</option>
+                            {clientes.map((cliente) => (
+                                <option key={cliente.id} value={cliente.id}>
+                                    {cliente.nombre} ({cliente.correo})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit}>
                     <div className="row">
                         {/* Columna izquierda */}
                         <div className="col-md-6">
-                            <div className="mb-3">
-                                <label htmlFor="nombre" className="form-label">Nombre completo</label>
-                                <input type="text" className="form-control" id="nombre" required />
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="edad" className="form-label">Edad</label>
-                                <input type="number" className="form-control" id="edad" min={10} max={100} required></input>
-                            </div>
-
-                            <div className="mb-3">
-                                <label htmlFor="genero" className="form-label">Género</label>
-                                <select id="genero" className="form-select" required>
-                                    <option value="">Selecciona</option>
-                                    <option>Masculino</option>
-                                    <option>Femenino</option>
-                                    <option>No binario / Prefiero no decir</option>
-                                </select>
-                            </div>
-
-                            <div className="mb-3">
-                                <label htmlFor="estatura" className="form-label">Estatura (cm)</label>
-                                <input type="number" className="form-control" id="estatura" required></input>
-                            </div>
-
-                            <div className="mb-3">
-                                <label htmlFor="peso" className="form-label">Peso (kg)</label>
-                                <input type="number" className="form-control" id="peso" required></input>
-                            </div>
-                            
-                            <div className="mb-3">
-                                <label htmlFor="tipoCuerpo" className="form-label">Tipo de cuerpo</label>
-                                <select id="tipoCuerpo" className="form-select" required>
-                                    <option value="">Selecciona</option>
-                                    <option>Ectomorfo (delgado)</option>
-                                    <option>Mesomorfo (atlético)</option>
-                                    <option>Endomorfo (más volumen)</option>
-                                </select>
-                            </div>
+                            <h5 className="mt-4">Datos físicos</h5>
+                            <input type="number" name="edad" value={formData.edad} onChange={handleChange} className="form-control mb-2" placeholder="Edad" />
+                            <select name="genero" value={formData.genero} onChange={handleChange} className="form-select mb-2">
+                                <option value="">Sexo</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                            <input type="number" name="altura" value={formData.altura} onChange={handleChange} className="form-control mb-2" placeholder="Altura (cm)" step="0.01" />
+                            <input type="number" name="peso" value={formData.peso} onChange={handleChange} className="form-control mb-2" placeholder="Peso (kg)" step="0.1"/>
+                            <input type="number" name="cintura" value={formData.cintura} onChange={handleChange} className="form-control mb-2" placeholder="Cintura (cm)" />
+                            <input type="text" name="imc" value={formData.imc} readOnly className="form-control mb-2" placeholder="IMC (calculo automatico)"/>
                         </div>
 
                         {/* Columna derecha */}
                         <div className="col-md-6">
+                            <h5>Actividad y salud</h5>
+                            <select name="tipo_cuerpo" value={formData.tipo_cuerpo} onChange={handleChange} className="form-select mb-2">
+                                <option value="">Tipo de cuerpo</option>
+                                <option value="Ectomorfo">Ectomorfo</option>
+                                <option value="Mesomorfo">Mesomorfo</option>
+                                <option value="Endomorfo">Endomorfo</option>
+                            </select>
+                            <select name="nivel_actividad" value={formData.nivel_actividad} onChange={handleChange} className="form-select mb-2">
+                                <option value="">Nivel de actividad</option>
+                                <option value="Sedentario">Sedentario</option>
+                                <option value="Moderado">Moderado</option>
+                                <option value="Activo">Activo</option>
+                            </select>
+                            <select name="objetivo" value={formData.objetivo} onChange={handleChange} className="form-select mb-2">
+                                <option value="">Objetivo</option>
+                                <option value="Perder grasa">Perder grasa</option>
+                                <option value="Ganar masa muscular">Ganar masa muscular</option>
+                                <option value="Mantenimiento">Mantenimiento</option>
+                            </select>
+
                             <div className="mb-3">
-                                <label htmlFor="nivelActividad" className="form-label">Nivel de actividad física</label>
-                                <select id="nivelActividad" className="form-select" required>
-                                    {/* Opciones... */}
-                                </select>
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="objetivo" className="form-label">Objetivo principal</label>
-                                <select id="objetivo" className="form-select" required>
-                                    <option value="">Selecciona</option>
-                                    <option>Perder grasa</option>
-                                    <option>Ganar masa muscular</option>
-                                    <option>Mantenimiento</option>
-                                </select>
+                                <label className="form-label">Restricciones alimenticias</label>
+                                {restriccionesJSON.map((item, idx) => (
+                                    <div key={idx}>
+                                        <input type="checkbox" value={item} checked={formData.restricciones_comida.includes(item)} onChange={(e) => handleCheckboxChange(e, "restricciones_comida")} />
+                                        <span className="ms-2">{item}</span>
+                                    </div>
+                                ))}
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="alergias" className="form-label">Restricciones o alergias alimenticias</label>
-                                <textarea id="alergias" className="form-control" rows="2" placeholder="Ej. soy alérgico al gluten, vegetariano, etc."></textarea>
-                            </div>
-
-                            <div className="mb-3">
-                                <label htmlFor="nivelActividad" className="form-label">¿Tiene alguna enfermedad cronica?</label>
-                                <select id="nivelActividad" className="form-select" required>
-                                    <option value="">Selecciona</option>
-                                    <option>Ninguna</option>
-                                    <option>Diabetes</option>
-                                    <option>Hipertensión</option>
-                                    <option>Dislipidemias(colesterol y trigliceridos altos)</option>
-                                    <option>Obesidad</option>
-                                    <option>Asma</option>
-                                    <option>Artritis</option>
-                                </select>
+                                <label className="form-label">Enfermedades crónicas</label>
+                                {enfermedadesJSON.map((item, idx) => (
+                                    <div key={idx}>
+                                        <input type="checkbox" value={item} checked={formData.enfermedades.includes(item)} onChange={(e) => handleCheckboxChange(e, "enfermedades")} />
+                                        <span className="ms-2">{item}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-lg w-100 mt-3">Guardar Perfil</button>
+                    <button type="submit" className="btn btn-primary w-100 mt-3">Guardar Perfil</button>
                 </form>
             </div>
         </div>
