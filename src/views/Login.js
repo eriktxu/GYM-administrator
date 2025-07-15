@@ -1,57 +1,82 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../styles/estilos-login.css"
+import { useNavigate, Link } from "react-router-dom";
+import { loginEntrenador } from "../api/auth";
+import "../styles/auth/estilos-login.css";
 
-function Login () {
+function Login() {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const correo = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+        const correo = e.target.email.value;
+        const password = e.target.password.value;
 
         try {
-            const response = await fetch("http://localhost:3307/api/entrenador/loginEntrenador", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ correo, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                //Guarda el token y redirige
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("trainerName", data.trainer.nombre);
-                alert("Bienvenido, " + data.trainer.nombre);
-                navigate("/administracion");
-            } else {
-                alert(data.message);
-            }
+            const data = await loginEntrenador(correo, password);
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("trainerName", data.trainer.nombre);
+            alert("Bienvenido, " + data.trainer.nombre);
+            navigate("/administracion");
         } catch (error) {
-            console.error("Error al iniciar sesión:", error);
-            alert("Error de conexión con el servidor.");
+            alert(error.message || "Error de conexión con el servidor.");
         }
     };
 
-
     return (
-        <div className="login-container">
-            <div className="login-box">
-                <h2>Iniciar Sesión</h2>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="email">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="correo@ejemplo.com" required />
+        <div className="authentication authpage">
+            <div className="login-app-wrapper">
+                <div className="auth-login boxed-auth-wrap row">
+                    <h2 className="text-center mb-4">Iniciar Sesión</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label fw-medium mt-3">
+                                Correo electrónico
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="correo@ejemplo.com"
+                                className="form-control"
+                                required
+                            />
+                        </div>
 
-                    <label htmlFor="password">Contraseña</label>
-                    <input type="password" id="password" placeholder="Ingresa tu contraseña" required />
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label fw-medium">
+                                Contraseña
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Ingresa tu contraseña"
+                                className="form-control"
+                                required
+                            />
+                        </div>
 
-                    <button className="btn" type="submit">Entrar</button>
-                    <p className="switch">
-                        ¿No tienes cuenta? <Link to="/Registro">Registrate</Link>
-                    </p>
-                </form>
+                        <button type="submit" className="mt-3 btn btn-primary w-100 rounded-pill">
+                            Entrar
+                        </button>
+
+                        <div className="mt-3 mb-3 text-center">
+                            <h6 className="text-subtitle-1 text-grey100 mt-3" style={{ display: 'inline-block' }}>
+                                ¿Eres nuevo?
+                                <Link
+                                    to="/Registro"
+                                    className="btn-link text-primary text-body-1 font-weight-medium opacity-1 ps-2"
+                                    style={{ cursor: "pointer", textDecoration: "none" }}
+                                >
+                                    Crea una cuenta
+                                </Link>
+                            </h6>
+                        </div>
+
+
+                    </form>
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,34 @@
+/* src/styles/components/alerta-suscripciones.css */
+.alerta-suscripciones {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    background-color: #fff;
+    padding: 20px 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #dc3545;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 300px;
+    animation: fadeInOut 5s ease-in-out;
+}
+
+.alerta-suscripciones h5 {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #dc3545;
+}
+
+.alerta-suscripciones p {
+    margin: 0;
+    font-size: 16px;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -10px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -10px); }
+}
