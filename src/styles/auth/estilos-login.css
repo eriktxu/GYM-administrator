@@ -1,0 +1,82 @@
+.authentication::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.3;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: radial-gradient(
+    rgb(210, 241, 223),
+    rgb(211, 215, 250),
+    rgb(186, 216, 244)
+  ) 0% 0% / 400% 400%;
+  z-index: -1;
+}
+
+.authpage .login-app-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.auth-login.boxed-auth-wrap {
+  max-width: 420px;
+  height: 420px;
+  width: 100%;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+  position: relative;
+  display: flex;
+}
+
+.fw-medium {
+  font-weight: 500;
+}
+
+.form-label {
+  margin-bottom: 0.3rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.form-check-input {
+  margin-top: 0.3rem;
+}
+
+.text-primary {
+  color: #3b82f6;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.text-decoration-none:hover {
+  text-decoration: underline;
+}
+
+/* Register */
+
+.register-boxed-auth-wrap {
+  min-height: 650px;
+  padding: 2rem;
+}
