@@ -1,3 +1,4 @@
+//consultar suscripciones
 export async function fetchSuscripcionesApi(token) {
     const response = await fetch("http://localhost:3307/api/clientes/conSuscripciones", {
         headers: {
