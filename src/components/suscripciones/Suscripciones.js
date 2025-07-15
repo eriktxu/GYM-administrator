@@ -37,12 +37,12 @@ function Suscripciones() {
                             {suscripciones.map((suscripcion, index) => (
                                 <tr key={index} className="month-item">
                                     <td>{suscripcion.nombre_cliente}</td>
-                                    <td>{suscripcion.tipo}</td>
-                                    <td>{new Date(suscripcion.fecha_inicio).toLocaleDateString()}</td>
-                                    <td>{new Date(suscripcion.fecha_vencimiento).toLocaleDateString()}</td>
+                                    <td>{suscripcion.tipo_suscripcion}</td>
+                                    <td>{new Date(suscripcion.inicio_suscripcion).toLocaleDateString()}</td>
+                                    <td>{new Date(suscripcion.vencimiento_suscripcion).toLocaleDateString()}</td>
                                     <td>
-                                        <span className={`badge bg-${suscripcion.estado === "Activa" ? "success" : "danger"}`}>
-                                            {suscripcion.estado}
+                                        <span className={`badge bg-${suscripcion.estado_suscripcion === "Activa" ? "success" : "danger"}`}>
+                                            {suscripcion.estado_suscripcion}
                                         </span>
                                     </td>
                                 </tr>
