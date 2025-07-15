@@ -1,0 +1,32 @@
+.clientes-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.clientes-table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 1;
+}
+
+.clientes-table th,
+.clientes-table td {
+    border-bottom: none !important;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    vertical-align: middle;
+}
+
+.clientes-table td.text-truncate {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.clientes-table .month-item:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.3s;
+}

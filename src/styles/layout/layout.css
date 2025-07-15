@@ -1,0 +1,70 @@
+/* Contenedor principal */
+.layout-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f8f9fa; /* Fondo claro como Spike */
+}
+
+/* Estilos del sidebar */
+.layout-container .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 270px;
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    z-index: 10;
+}
+
+/* Si está cerrado (en móvil o toggle) */
+.layout-container .sidebar.closed {
+    transform: translateX(-100%);
+}
+
+/* Contenido principal */
+.main-content {
+    flex-grow: 1;
+    margin-left: 270px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar fijo */
+.main-content > .navbar {
+    position: fixed;
+    top: 20px;
+    left: 290px;
+    right: 0;
+    z-index: 99;
+}
+
+/* Zona del contenido */
+.content-area {
+    margin-top: 100px; /* espacio para navbar */
+    padding: 20px;
+    min-height: calc(100vh - 100px);
+    overflow-y: auto;
+    background-color: #f5f7fb;
+    border-radius: 12px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.layout-body-content {
+    padding: 120px 80px 80px 80px ;
+}
+
+/* Responsivo */
+@media (max-width: 1279px) {
+    .main-content {
+        margin-left: 0;
+    }
+
+    .main-content > .navbar {
+        left: 0;
+    }
+}
