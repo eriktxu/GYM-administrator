@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import ModalAgregarCliente from "./ModalAgregarCliente";
+import ModalEditarCliente from "./ModalEditarCliente";
 import "../../styles/components/clientes.css";
-import { fetchClientesApi } from "../../api/clientes";
+import { fetchClientesApi, eliminarCliente } from "../../api/clientes";
 
 function Clientes() {
     const [clientes, setClientes] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    const [showModalAgregar, setShowModalAgregar] = useState(false);
+    const [showModalEditar, setShowModalEditar] = useState(false);
+    const [clienteAEditar, setClienteAEditar] = useState(null);
 
-    useEffect(() => {
+    const cargarClientes = () => {
         const token = localStorage.getItem("token");
         fetchClientesApi(token)
             .then(setClientes)
             .catch((error) => {
                 console.error("Error al obtener los clientes:", error);
             });
+    };
+
+    useEffect(() => {
+        cargarClientes();
     }, []);
 
     return (
@@ -23,7 +30,7 @@ function Clientes() {
                 <div className="card-body p-0">
                     <div className="d-flex justify-content-between align-items-center mb-3 p-3">
                         <h3 className="card-title mb-0">Administrar clientes</h3>
-                        <Button variant="success" onClick={() => setShowModal(true)}>
+                        <Button variant="success" onClick={() => setShowModalAgregar(true)}>
                             Agregar Cliente
                         </Button>
                     </div>
@@ -45,10 +52,26 @@ function Clientes() {
                                         <td className="text-truncate">{cliente.correo}</td>
                                         <td className="text-nowrap">{cliente.telefono}</td>
                                         <td>
-                                            <Button variant="outline-primary" size="sm" className="me-2">
+                                            <Button
+                                                variant="outline-primary"
+                                                size="sm"
+                                                className="me-2"
+                                                onClick={() => {
+                                                    setClienteAEditar(cliente);
+                                                    setShowModalEditar(true);
+                                                }}
+                                            >
                                                 Editar
                                             </Button>
-                                            <Button variant="outline-danger" size="sm">
+                                            <Button
+                                                variant="outline-danger"
+                                                size="sm"
+                                                onClick={() => {
+                                                    if (window.confirm(`¿Estás seguro de eliminar a ${cliente.nombre}?`)) {
+                                                        eliminarCliente(cliente.id, setClientes);
+                                                    }
+                                                }}
+                                            >
                                                 Eliminar
                                             </Button>
                                         </td>
@@ -60,7 +83,20 @@ function Clientes() {
                 </div>
             </div>
 
-            <ModalAgregarCliente show={showModal} handleClose={() => setShowModal(false)} />
+            {/* Modal para agregar cliente */}
+            <ModalAgregarCliente
+                show={showModalAgregar}
+                handleClose={() => setShowModalAgregar(false)}
+                onClienteAgregado={cargarClientes}
+            />
+
+            {/* Modal para editar cliente */}
+            <ModalEditarCliente
+                show={showModalEditar}
+                handleClose={() => setShowModalEditar(false)}
+                cliente={clienteAEditar}
+                onClienteActualizado={cargarClientes}
+            />
         </>
     );
 }

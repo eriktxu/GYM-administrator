@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import '../../styles/components/clientes.css';
-import { fetchSuscripcionesApi } from "../../api/suscripciones";
+import { fetchSuscripcionesApi, } from "../../api/suscripciones";
+import ModalRenovar from "./ModalRenovar";
 
 function Suscripciones() {
     const [suscripciones, setSuscripciones] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+
+    const clientesInactivos = suscripciones
+        .filter((s) => s.estado_suscripcion === "Inactiva")
+        .map((s) => ({ id: s.cliente_id, nombre: s.nombre_cliente }));
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -19,7 +25,9 @@ function Suscripciones() {
             <div className="card-body p-0">
                 <div className="d-flex justify-content-between align-items-center mb-3 p-3">
                     <h3 className="card-title mb-0">Administrar Suscripciones</h3>
-                    <button className="btn btn-success">Nueva Suscripción</button>
+                    <button className="btn btn-success" onClick={() => setShowModal(true)}>
+                        Renovar suscripción
+                    </button>
                 </div>
 
                 <div className="table-responsive">
@@ -35,7 +43,7 @@ function Suscripciones() {
                         </thead>
                         <tbody>
                             {suscripciones.map((suscripcion, index) => (
-                                <tr key={index} className="month-item">
+                                <tr key={index}>
                                     <td>{suscripcion.nombre_cliente}</td>
                                     <td>{suscripcion.tipo_suscripcion}</td>
                                     <td>{new Date(suscripcion.inicio_suscripcion).toLocaleDateString()}</td>
@@ -50,6 +58,20 @@ function Suscripciones() {
                         </tbody>
                     </table>
                 </div>
+
+                <ModalRenovar
+                    show={showModal}
+                    onHide={() => setShowModal(false)}
+                    clientesInactivos={clientesInactivos}
+                    onRenovado={() => {
+                        // vuelve a cargar las suscripciones
+                        const token = localStorage.getItem("token");
+                        fetchSuscripcionesApi(token)
+                            .then(setSuscripciones)
+                            .catch((error) => console.error("Error al actualizar lista:", error));
+                        setShowModal(false);
+                    }}
+                />
             </div>
         </div>
     );
