@@ -3,6 +3,7 @@ import { useClientes } from "../api/perfil";
 import enfermedadesJSON from "../data/enfermedades.json";
 import restriccionesJSON from "../data/restricciones.json";
 import "../styles/perfil.css";
+import axios from "axios";
 
 function Perfil() {
     const { clientes, loading, error } = useClientes();
@@ -28,7 +29,6 @@ function Perfil() {
     if (!isNaN(alturaCm) && !isNaN(peso) && alturaCm > 0) {
         const alturaM = alturaCm / 100; // 🔁 conversión cm ➝ m
         const imcCalculado = peso / (alturaM * alturaM);
-        console.log("Altura (m):", alturaM, "Peso:", peso, "IMC:", imcCalculado);
         setFormData((prev) => ({ ...prev, imc: imcCalculado.toFixed(2) }));
     } else {
         setFormData((prev) => ({ ...prev, imc: "" }));
@@ -49,14 +49,33 @@ function Perfil() {
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const datosConCliente = {
-            cliente_id: clienteSeleccionado,
-            ...formData
-        };
-        console.log("Datos a enviar:", datosConCliente);
-    };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!clienteSeleccionado) {
+        alert("Selecciona un cliente primero");
+        return;
+    }
+
+const payload = {
+    id: clienteSeleccionado,
+    ...formData
+};
+
+const token = localStorage.getItem("token");
+
+    try {
+        const response = await axios.post("http://localhost:3307/api/clientes/guardar", payload,{
+            headers: `Bearer ${token}`
+        });
+        console.log("Respuesta del servidor:", response.data);
+        alert("Perfil guardado correctamente.");
+    } catch (error) {
+        console.error("Error al guardar perfil:", error);
+        alert("Hubo un error al guardar el perfil.");
+    }
+};
+
 
     return (
         <div className="container-fluid">
