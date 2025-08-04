@@ -11,6 +11,7 @@ function Sidebar({ isOpen }) {
         { label: "Clientes", icon: <User size={20} />, to: "/administracion/clientes" },
         { label: "Suscripciones", icon: <User size={20} />, to: "/administracion/suscripciones" },
         { label: "Perfil", icon: <User size={20} />, to: "/administracion/perfil" },
+        { label: "Dieta y rutina", icon: <User size={20} />, to: "/administracion/dieta" },
         
     ];
 
