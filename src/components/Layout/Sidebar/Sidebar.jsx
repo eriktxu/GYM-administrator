@@ -12,7 +12,7 @@ function Sidebar({ isOpen }) {
         { label: "Suscripciones", icon: <User size={20} />, to: "/administracion/suscripciones" },
         { label: "Perfil", icon: <User size={20} />, to: "/administracion/perfil" },
         { label: "Rutinas", icon: <User size={20} />, to: "/administracion/rutinas" },
-        
+        { label: "Dieta y rutina", icon: <User size={20} />, to: "/administracion/dieta" },
     ];
 
     return (
