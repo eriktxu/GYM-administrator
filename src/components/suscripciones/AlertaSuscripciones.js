@@ -10,7 +10,7 @@ function AlertaSuscripciones() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         fetchSuscripcionesApi(token).then((suscripciones) => {
-            const vencidas = suscripciones.filter(s => s.estado !== "Activa").length;
+            const vencidas = suscripciones.filter(s => s.estado_suscripcion !== "Activa").length;
             if (vencidas > 0) {
                 setInactivas(vencidas);
                 setMostrar(true);
