@@ -1,0 +1,26 @@
+/* src/components/dashboard/CardIngresos.css */
+
+.card-ingresos {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-title {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.card-amount {
+  font-size: 2.5rem;
+  color: #28a745;
+  margin: 0;
+}

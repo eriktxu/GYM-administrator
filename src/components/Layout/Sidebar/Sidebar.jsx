@@ -17,7 +17,7 @@ function Sidebar({ isOpen }) {
         { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/administracion" },
         { label: "Clientes", icon: <Users size={20} />, to: "/administracion/clientes" },
         { label: "Suscripciones", icon: <CreditCard size={20} />, to: "/administracion/suscripciones" },
-        { label: "Perfil", icon: <Settings size={20} />, to: "/administracion/perfil" },
+        { label: "Perfil", icon: <Settings size={20} />, to: "/administracion/perfil" },     
         { label: "Dieta y rutina", icon: <Dumbbell size={20} />, to: "/administracion/dieta" },
     ];
 
