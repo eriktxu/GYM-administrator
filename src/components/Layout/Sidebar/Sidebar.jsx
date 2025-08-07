@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, User } from "lucide-react";
+import { Activity, CreditCard, Dumbbell, LayoutDashboard, User } from "lucide-react";
 import '../../../styles/layout/sidebar.css';
 
 function Sidebar({ isOpen }) {
@@ -9,10 +9,9 @@ function Sidebar({ isOpen }) {
     const navItems = [
         { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/administracion" },
         { label: "Clientes", icon: <User size={20} />, to: "/administracion/clientes" },
-        { label: "Suscripciones", icon: <User size={20} />, to: "/administracion/suscripciones" },
-        { label: "Perfil", icon: <User size={20} />, to: "/administracion/perfil" },
-        { label: "Dieta y rutina", icon: <User size={20} />, to: "/administracion/dieta" },
-        
+        { label: "Suscripciones", icon: <CreditCard size={20} />, to: "/administracion/suscripciones" },
+        { label: "Perfil", icon: <Activity size={20} />, to: "/administracion/perfil" },
+        { label: "Dieta y rutina", icon: <Dumbbell size={20} />, to: "/administracion/dieta" },
     ];
 
     return (

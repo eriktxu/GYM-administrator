@@ -1,0 +1,43 @@
+.dashboard-container {
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  height: calc(100vh - 100px); /* Ajusta según la altura de navbar */
+}
+
+.dashboard-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Tarjeta grande izquierda */
+.dashboard-card:nth-child(1) {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  overflow: auto; /* Solo esta puede tener scroll si lo necesita */
+}
+
+/* Tarjeta derecha arriba */
+.dashboard-card:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Tarjeta derecha abajo */
+.dashboard-card:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+}
