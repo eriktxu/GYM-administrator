@@ -7,7 +7,6 @@ import Perfil from './components/Perfil';
 import Clientes from './components/clientes/Clientes';
 import Suscripciones from './components/suscripciones/Suscripciones';
 import Dashboard from './views/Dashborad';
-import Rutinas from './components/rutinas/Rutinas';
 import Dieta from './components/dieta/Dieta';
 
 import PrivateRoute from './components/routes/privateRoute';
@@ -38,7 +37,6 @@ function App() {
                     <Route path='clientes' element={<Clientes/>}/>
                     <Route path='suscripciones' element={<Suscripciones/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
-                    <Route path='rutinas' element={<Rutinas/>} />
                     <Route path='dieta' element={<Dieta/>}/>
                 </Route>
 

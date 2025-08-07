@@ -20,6 +20,16 @@ function Suscripciones() {
             });
     }, []);
 
+    const obtenerEstado = (fechaVencimiento) => {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const vencimiento = new Date(fechaVencimiento);
+        vencimiento.setHours(0, 0, 0, 0);
+
+        return vencimiento < hoy ? "Inactivo" : "Activo";
+    };
+
     return (
         <div className="card mb-4">
             <div className="card-body p-0">
@@ -49,8 +59,8 @@ function Suscripciones() {
                                     <td>{new Date(suscripcion.inicio_suscripcion).toLocaleDateString()}</td>
                                     <td>{new Date(suscripcion.vencimiento_suscripcion).toLocaleDateString()}</td>
                                     <td>
-                                        <span className={`badge bg-${suscripcion.estado_suscripcion === "Activa" ? "success" : "danger"}`}>
-                                            {suscripcion.estado_suscripcion}
+                                        <span className={`badge bg-${obtenerEstado(suscripcion.vencimiento_suscripcion) === "Activo" ? "success" : "danger"}`}>
+                                            {obtenerEstado(suscripcion.vencimiento_suscripcion)}
                                         </span>
                                     </td>
                                 </tr>

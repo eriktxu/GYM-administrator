@@ -1,26 +1,37 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import AlertaSuscripciones from "../components/suscripciones/AlertaSuscripciones";
-import ProductSales from '../components/dashboard/ProductSales'
-import ProfitExpensive from "../components/dashboard/ProfitExpensive";
-import TrafficDistribution from "../components/dashboard/TrafficDistribution";
+import CardIngresos from '../components/dashboard/CardIngresos'
+import TipoSuscripcionesChart from "../components/dashboard/TipoSuscripcionesChart";
+import EstadoSuscripcionesChart from "../components/dashboard/EstadoSuscripcionesChart";
+import { fetchSuscripcionesApi } from "../api/suscripciones";
 import "../styles/views/dashboard.css";
 
 function Dashboard() {
+
+    const [suscripciones, setSuscripciones] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetchSuscripcionesApi(token)
+      .then(setSuscripciones)
+      .catch(console.error);
+  }, []);
+
     return (
         <div className="dashboard-container">
             <AlertaSuscripciones />
 
             <div className="dashboard-grid">
                 <div className="dashboard-card">
-                    <ProductSales />
+                    <CardIngresos />
                 </div>
 
                 <div className="dashboard-card">
-                    <ProfitExpensive />
+                    <TipoSuscripcionesChart suscripciones={suscripciones} />
                 </div>
 
                 <div className="dashboard-card">
-                    <TrafficDistribution />
+                    <EstadoSuscripcionesChart />
                 </div>
             </div>
         </div>
