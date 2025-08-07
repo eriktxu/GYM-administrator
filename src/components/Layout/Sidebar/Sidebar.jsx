@@ -1,18 +1,24 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, User } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  CreditCard,
+  Settings,
+  Dumbbell,
+} from "lucide-react";
 import '../../../styles/layout/sidebar.css';
+
 
 function Sidebar({ isOpen }) {
     const location = useLocation();
 
     const navItems = [
         { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/administracion" },
-        { label: "Clientes", icon: <User size={20} />, to: "/administracion/clientes" },
-        { label: "Suscripciones", icon: <User size={20} />, to: "/administracion/suscripciones" },
-        { label: "Perfil", icon: <User size={20} />, to: "/administracion/perfil" },
-        { label: "Dieta y rutina", icon: <User size={20} />, to: "/administracion/dieta" },
-        
+        { label: "Clientes", icon: <Users size={20} />, to: "/administracion/clientes" },
+        { label: "Suscripciones", icon: <CreditCard size={20} />, to: "/administracion/suscripciones" },
+        { label: "Perfil", icon: <Settings size={20} />, to: "/administracion/perfil" },
+        { label: "Dieta y rutina", icon: <Dumbbell size={20} />, to: "/administracion/dieta" },
     ];
 
     return (
