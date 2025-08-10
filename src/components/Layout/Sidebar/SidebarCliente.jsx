@@ -14,10 +14,9 @@ function Sidebar({ isOpen }) {
     const location = useLocation();
 
     const navItems = [
-        { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/gimnasio" },
-        { label: "Clientes", icon: <Users size={20} />, to: "/gimnasio/clientes" },
-        { label: "Suscripciones", icon: <CreditCard size={20} />, to: "/gimnasio/suscripciones" },
-        // Añade aquí más rutas si las tienes
+        { label: "Mi Panel", icon: <LayoutDashboard size={20} />, to: "/cliente" },
+        { label: "Mi Perfil", icon: <Settings size={20} />, to: "/cliente/perfil" },
+        { label: "Mi Dieta", icon: <Dumbbell size={20} />, to: "/cliente/dieta" },
     ];
 
     return (
