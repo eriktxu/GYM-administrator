@@ -5,6 +5,7 @@ import Layout from './components/Layout/Layout';
 import PerfilCliente from './components/Perfil';
 import ClientesGimnasio from './components/clientes/Clientes';
 import Suscripciones from './components/suscripciones/Suscripciones';
+import Landing from './views/Landing';
 import DashboardGimnasio from './views/Dashborad';
 import DashboardCliente from './views/Dashboard-cliente';
 import DashboardSuperadmin from './views/Dashboard-superadmin';
@@ -16,9 +17,7 @@ import PublicRoute from './components/routes/publicRoute';
 function LoadingScreen() {
     // Puedes hacer este componente tan bonito como quieras (ej. un spinner)
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <h1>Cargando...</h1>
-        </div>
+
     );
 }
 
@@ -37,6 +36,7 @@ function ApplicationRoutes() {
             {/* Rutas públicas */}
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
             <Route path="/" element={<Navigate to="/login" replace />} />
+             <Route path='/landing' element={<PublicRoute> <Landing/> </PublicRoute>}/>
 
             {/* Rutas privadas (esto queda igual) */}
             <Route element={<PrivateRoute allowedRoles={[1]} />}>
