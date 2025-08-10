@@ -14,10 +14,10 @@ function Sidebar({ isOpen }) {
     const location = useLocation();
 
     const navItems = [
-        { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/gimnasio" },
-        { label: "Clientes", icon: <Users size={20} />, to: "/gimnasio/clientes" },
-        { label: "Suscripciones", icon: <CreditCard size={20} />, to: "/gimnasio/suscripciones" },
-        // Añade aquí más rutas si las tienes
+        { label: "Dashboard", icon: <LayoutDashboard size={20} />, to: "/superadmin" },
+        //Por definir
+        { label: "Gimnasios", icon: <Users size={20} />, to: "/administracion/gimnasios" },
+        { label: "Pagos", icon: <CreditCard size={20} />, to: "/administracion/pagos" },
     ];
 
     return (
