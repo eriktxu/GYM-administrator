@@ -8,6 +8,7 @@ import Clientes from './components/clientes/Clientes';
 import Suscripciones from './components/suscripciones/Suscripciones';
 import Dashboard from './views/Dashborad';
 import Dieta from './components/dieta/Dieta';
+import Landing from './views/Landing';
 
 import PrivateRoute from './components/routes/privateRoute';
 import PublicRoute from './components/routes/publicRoute';
@@ -17,6 +18,12 @@ function App() {
         <Router>
             <Routes>
                 {/* Rutas públicas protegidas */}
+
+                <Route
+                    path='/landing'
+                    element={<PublicRoute> <Landing/> </PublicRoute>}
+                />
+
                 <Route
                     path="/"
                     element={<PublicRoute> <Login /> </PublicRoute>}
