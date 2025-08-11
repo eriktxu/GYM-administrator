@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerEntrenador } from "../api/auth"; // crear esta función para registrar
+import { registerGimnasio } from "../api/auth"; // crear esta función para registrar
 import "../styles/auth/estilos-login.css";
 
 function Register() {
@@ -17,7 +17,7 @@ function Register() {
         const nuevoCliente = { nombre, correo, telefono, password };
 
         try {
-            const data = await registerEntrenador(nuevoCliente);
+            const data = await registerGimnasio(nuevoCliente);
             alert(data.message);
             navigate("/"); // redirige al login o a donde prefieras
         } catch (error) {

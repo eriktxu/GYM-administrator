@@ -22,16 +22,13 @@ export async function login(correo, password) {
   }
 }
 
-export async function registerEntrenador(nuevoCliente) {
+export async function registerGimnasio(nuevoCliente) {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("No hay token. Por favor inicia sesión.");
 
-    const response = await fetch(`${API_BASE_URL}/api/entrenador/registerEntrenador`, {
+    const response = await fetch(`${API_BASE_URL}/api/superadmin/registerGimnasio`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Se envía el token
       },
       body: JSON.stringify(nuevoCliente),
     });
