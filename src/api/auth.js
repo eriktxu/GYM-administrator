@@ -22,28 +22,24 @@ export async function login(correo, password) {
   }
 }
 
-export async function registerGimnasio(gimnasioData) {
+export async function registerEntrenador(nuevoCliente) {
   try {
-    // Petición a la URL del backend SIN enviar el token de autorización
-    const response = await fetch(`${API_BASE_URL}/api/superadmin/registerGimnasio`, {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("No hay token. Por favor inicia sesión.");
+
+    const response = await fetch(`${API_BASE_URL}/api/entrenador/registerEntrenador`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // La cabecera "Authorization" ha sido eliminada
+        "Authorization": `Bearer ${token}`, // Se envía el token
       },
-      body: JSON.stringify(gimnasioData),
+      body: JSON.stringify(nuevoCliente),
     });
 
-    // Manejamos la respuesta del servidor
     const data = await response.json();
-    if (!response.ok) {
-      // Si el servidor responde con un error (ej: 409 por correo duplicado), lo mostramos
-      throw new Error(data.message || "Error en el registro del gimnasio");
-    }
-
+    if (!response.ok) throw new Error(data.message || "Error en registro");
     return data;
   } catch (error) {
-    // Relanzamos el error para que el componente React lo pueda atrapar y mostrar en la UI
     throw error;
   }
 }

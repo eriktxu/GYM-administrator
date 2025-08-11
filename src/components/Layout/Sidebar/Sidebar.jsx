@@ -7,7 +7,7 @@ import {
   Settings,
   Dumbbell,
 } from "lucide-react";
-import '../../../styles/layout/layout.css';
+import '../../../styles/layout/sidebar.css';
 
 
 function Sidebar({ isOpen }) {
