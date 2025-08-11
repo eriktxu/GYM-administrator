@@ -71,6 +71,19 @@ function Login() {
                         <button type="submit" className="mt-3 btn btn-primary w-100 rounded-pill">
                             Entrar
                         </button>
+
+                        <div className="mt-3 mb-3 text-center">
+                            <h6 className="text-subtitle-1 text-grey100 mt-3" style={{ display: 'inline-block' }}>
+                                ¿Eres nuevo?
+                                <Link
+                                    to="/registro"
+                                    className="btn-link text-primary text-body-1 font-weight-medium opacity-1 ps-2"
+                                    style={{ cursor: "pointer", textDecoration: "none" }}
+                                >
+                                    Crea una cuenta
+                                </Link>
+                            </h6>
+                        </div>
                     </form>
                 </div>
             </div>

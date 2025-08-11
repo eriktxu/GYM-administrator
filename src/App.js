@@ -10,14 +10,15 @@ import DashboardGimnasio from './views/Dashborad';
 import DashboardCliente from './views/Dashboard-cliente';
 import DashboardSuperadmin from './views/Dashboard-superadmin';
 import DietaCliente from './components/dieta/Dieta';
+import Register from './views/Register';
 
 import PrivateRoute from './components/routes/privateRoute';
 import PublicRoute from './components/routes/publicRoute';
 
 function LoadingScreen() {
-    // Puedes hacer este componente tan bonito como quieras (ej. un spinner)
+    
     return (
-
+      <div>Cargando...</div>
     );
 }
 
@@ -34,9 +35,11 @@ function ApplicationRoutes() {
     return (
         <Routes>
             {/* Rutas públicas */}
+            
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+            <Route path='/registro' element={<PublicRoute><Register/></PublicRoute>}></Route>
             <Route path="/" element={<Navigate to="/login" replace />} />
-             <Route path='/landing' element={<PublicRoute> <Landing/> </PublicRoute>}/>
+            <Route path='/landing' element={<PublicRoute> <Landing/> </PublicRoute>}/>
 
             {/* Rutas privadas (esto queda igual) */}
             <Route element={<PrivateRoute allowedRoles={[1]} />}>
