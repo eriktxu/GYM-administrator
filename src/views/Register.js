@@ -99,7 +99,7 @@ function Register() {
                         <h6 className="text-subtitle-1 text-grey100">
                             ¿Ya tienes cuenta?{" "}
                             <Link
-                                to="/"
+                                to="/Login"
                                 className="btn-link text-primary text-body-1 font-weight-medium opacity-1 ps-2"
                                 style={{ cursor: "pointer", textDecoration: "none" }}
                             >

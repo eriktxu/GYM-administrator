@@ -10,7 +10,7 @@ export default function Landing() {
     mensual: [
       {
         nombre: 'Básico',
-        precio: '$10/mes',
+        precio: '$200/mes',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones'
@@ -18,7 +18,7 @@ export default function Landing() {
       },
       {
         nombre: 'Estándar',
-        precio: '$20/mes',
+        precio: '$300/mes',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones',
@@ -27,7 +27,7 @@ export default function Landing() {
       },
       {
         nombre: 'Premium',
-        precio: '$30/mes',
+        precio: '$400/mes',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones',
@@ -39,7 +39,7 @@ export default function Landing() {
     anual: [
       {
         nombre: 'Básico',
-        precio: '$100/año',
+        precio: '$1999/año',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones'
@@ -47,7 +47,7 @@ export default function Landing() {
       },
       {
         nombre: 'Estándar',
-        precio: '$200/año',
+        precio: '$2999/año',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones',
@@ -56,7 +56,7 @@ export default function Landing() {
       },
       {
         nombre: 'Premium',
-        precio: '$300/año',
+        precio: '$3999/año',
         beneficios: [
           'Registrar clientes',
           'Administrar suscripciones',
@@ -111,7 +111,7 @@ export default function Landing() {
 
             <div className="u-nav-container">
               <ul className="u-nav u-unstyled u-nav-1" role="menubar"><li className="u-nav-item" role="none"><a className="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="/landing" style={{ padding: '10px 20px' }} role="menuitem">Home</a>
-              </li><li className="u-nav-item" role="none"><a className="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="/" style={{ padding: '10px 20px' }} role="menuitem">Iniciar Sesión</a>
+              </li><li className="u-nav-item" role="none"><a className="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="/Login" style={{ padding: '10px 20px' }} role="menuitem">Iniciar Sesión</a>
                 </li><li className="u-nav-item" role="none"><a className="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="/Registro" style={{ padding: '10px 20px' }} role="menuitem">Registrarme</a>
                 </li></ul>
             </div>
@@ -120,7 +120,7 @@ export default function Landing() {
                 <div className="u-inner-container-layout u-sidenav-overflow">
                   <div className="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
                   <ul className="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/landing">Home</a>
-                  </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/">Iniciar Sesión</a>
+                  </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/Login">Iniciar Sesión</a>
                     </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/Registro">Registrarme</a>
                     </li></ul>
                 </div>

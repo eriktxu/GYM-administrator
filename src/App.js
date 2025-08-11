@@ -36,10 +36,11 @@ function ApplicationRoutes() {
         <Routes>
             {/* Rutas públicas */}
             
+            <Route path='/' element={<Navigate to="landing" replace />} />
+
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
             <Route path='/registro' element={<PublicRoute><Register/></PublicRoute>}></Route>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path='/landing' element={<PublicRoute> <Landing/> </PublicRoute>}/>
+            <Route path='/landing' element={<PublicRoute><Landing/></PublicRoute>} ></Route>
 
             {/* Rutas privadas (esto queda igual) */}
             <Route element={<PrivateRoute allowedRoles={[1]} />}>
