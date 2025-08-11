@@ -120,8 +120,8 @@ export default function Landing() {
                 <div className="u-inner-container-layout u-sidenav-overflow">
                   <div className="u-menu-close" tabindex="-1" aria-label="Close menu"></div>
                   <ul className="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/landing">Home</a>
-                  </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/Login">Iniciar Sesión</a>
-                    </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/Registro">Registrarme</a>
+                  </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/login">Iniciar Sesión</a>
+                    </li><li className="u-nav-item"><a className="u-button-style u-nav-link" href="/registro">Registrarme</a>
                     </li></ul>
                 </div>
               </div>
