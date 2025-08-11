@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu } from "lucide-react";
-import '../../../styles/layout/navbar.css';
+import '../../../styles/layout/layout.css';
 import ProfileDD from './ProfileDD';
 
 function Navbar({ toggleSidebar }) {

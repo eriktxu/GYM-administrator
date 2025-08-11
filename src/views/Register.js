@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerEntrenador } from "../api/auth"; // crear esta función para registrar
+import { registerGimnasio } from "../api/auth";
 import "../styles/auth/estilos-login.css";
 
 function Register() {
@@ -8,6 +8,12 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // --- Modificado: Se agrega la validación del checkbox ---
+        if (!e.target.privacy?.checked) {
+            alert("Debes aceptar el aviso de privacidad para poder registrarte.");
+            return; // Detiene la función y muestra un error amigable
+        }
 
         const nombre = e.target.nombre.value;
         const correo = e.target.email.value;
@@ -17,9 +23,9 @@ function Register() {
         const nuevoCliente = { nombre, correo, telefono, password };
 
         try {
-            const data = await registerEntrenador(nuevoCliente);
+            const data = await registerGimnasio(nuevoCliente);
             alert(data.message);
-            navigate("/"); // redirige al login o a donde prefieras
+            navigate("/");
         } catch (error) {
             alert(error.message || "Error en el servidor");
         }
@@ -31,9 +37,10 @@ function Register() {
                 <div className="auth-login boxed-auth-wrap row register-boxed-auth-wrap row">
                     <h2 className="text-center mb-4">Registro</h2>
                     <form onSubmit={handleSubmit}>
+                        {/* ... campos de nombre, correo, teléfono y contraseña sin cambios ... */}
                         <div className="mb-3">
                             <label htmlFor="nombre" className="form-label fw-medium">
-                                Nombre completo
+                                Nombre del Gimnasio
                             </label>
                             <input
                                 type="text"
@@ -86,6 +93,23 @@ function Register() {
                                 required
                             />
                         </div>
+
+                        {/* --- Nuevo: Checkbox de Aviso de Privacidad --- */}
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id="privacy"
+                                name="privacy" // Importante para acceder en handleSubmit
+                            />
+                            <label className="form-check-label" htmlFor="privacy">
+                                Acepto el{" "}
+                                <Link to="/aviso.html" target="_blank" rel="noopener noreferrer">
+                                    aviso de privacidad
+                                </Link>
+                            </label>
+                        </div>
+                        {/* --- Fin de la sección nueva --- */}
 
                         <button
                             type="submit"
