@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-//Consultar clientes
-export async function fetchClientesApi(token) {
-    const response = await fetch("http://localhost:3307/api/clientes/conClientes", {
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
+// Obtener token siempre de localStorage
+const getToken = () => localStorage.getItem("token");
+
+// Consultar clientes
+export async function fetchClientesApi() {
+    const token = getToken();
+    const response = await fetch(`${API_BASE_URL}/api/clientes/conClientes`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -15,22 +21,22 @@ export async function fetchClientesApi(token) {
     return await response.json();
 }
 
-//registrar nuevo cliente
+// Registrar nuevo cliente
 export const registrarCliente = async (cliente) => {
-    const token = localStorage.getItem("token");
-    const response = await axios.post('http://localhost:3307/api/clientes/regisCliente', cliente,{
-        headers:{
+    const token = getToken();
+    const response = await axios.post(`${API_BASE_URL}/api/clientes/regisCliente`, cliente, {
+        headers: {
             Authorization: `Bearer ${token}`
         }
     });
     return response.data;
 };
 
-//Eliminar cliente 
-export const eliminarCliente = async (id, setClientes,) => {
+// Eliminar cliente
+export const eliminarCliente = async (id, setClientes) => {
     try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:3307/api/clientes/eliminar/${id}`,{
+        const token = getToken();
+        await axios.delete(`${API_BASE_URL}/api/clientes/eliminar/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -41,12 +47,12 @@ export const eliminarCliente = async (id, setClientes,) => {
     }
 };
 
-//Editar cliente
-export const actualizarCliente = async (id, datos, token) => {
-    await axios.put(`http://localhost:3307/api/clientes/actualizar/${id}`, datos, {
+// Editar cliente
+export const actualizarCliente = async (id, datos) => {
+    const token = getToken();
+    await axios.put(`${API_BASE_URL}/api/clientes/actualizar/${id}`, datos, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
 };
-
