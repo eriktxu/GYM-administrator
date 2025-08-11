@@ -29,19 +29,14 @@ function Layout({ children }) {
     }
   };
 
-return (
+  return (
     <div className="layout-container">
-        {renderSidebar()}
-        
-        {/* NUEVO: Contenedor para todo el contenido de la derecha */}
-        <div className="main-area">
-            <Navbar onMenuClick={toggleSidebar} />
-            <main className="content">
-                {children}
-            </main>
-        </div>
+      {/* 5. Le pasamos la función de 'toggle' al Navbar para que el botón funcione */}
+      <Navbar onMenuClick={toggleSidebar} />
+      {renderSidebar()}
+      <main className="content">{children}</main>
     </div>
-);
+  );
 }
 
 export default Layout;
