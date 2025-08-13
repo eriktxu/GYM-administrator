@@ -1,0 +1,52 @@
+.summary-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.welcome-header {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.summary-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2540a2; /* Un color primario */
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 4px;
+}
+
+.stat-item.text-danger .stat-value,
+.stat-item.text-danger .stat-label {
+  color: #dc3545; /* Rojo para alertas */
+}
