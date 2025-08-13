@@ -72,9 +72,8 @@ function Suscripciones() {
                 <ModalRenovar
                     show={showModal}
                     onHide={() => setShowModal(false)}
-                    clientesInactivos={clientesInactivos}
+                    clientes={suscripciones}  // ahora pasamos todas
                     onRenovado={() => {
-                        // vuelve a cargar las suscripciones
                         const token = localStorage.getItem("token");
                         fetchSuscripcionesApi(token)
                             .then(setSuscripciones)

@@ -1,10 +1,26 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { renovarSuscripcion } from "../../api/suscripciones"; // importa tu función
+import { renovarSuscripcion } from "../../api/suscripciones";
 
-function ModalRenovarSuscripcion({ show, onHide, clientesInactivos, onSeleccionar, onRenovado }) {
+function ModalRenovarSuscripcion({ show, onHide, clientes, onRenovado }) {
     const [clienteId, setClienteId] = useState("");
     const [tipoSuscripcion, setTipoSuscripcion] = useState("");
+
+    // misma lógica que en Suscripciones.jsx
+    const obtenerEstado = (fechaVencimiento) => {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const vencimiento = new Date(fechaVencimiento);
+        vencimiento.setHours(0, 0, 0, 0);
+
+        return vencimiento < hoy ? "Inactivo" : "Activo";
+    };
+
+    // Filtrar aquí a los inactivos usando la función
+    const clientesInactivos = clientes
+        .filter((s) => obtenerEstado(s.vencimiento_suscripcion) === "Inactivo")
+        .map((s) => ({ id: s.cliente_id, nombre: s.nombre_cliente }));
 
     const handleRenovar = async () => {
         if (!clienteId || !tipoSuscripcion) {
@@ -17,8 +33,8 @@ function ModalRenovarSuscripcion({ show, onHide, clientesInactivos, onSelecciona
             await renovarSuscripcion(clienteId, tipoSuscripcion, token);
             alert("Suscripción renovada correctamente ✅");
 
-            if (onRenovado) onRenovado(); // para actualizar lista
-            onHide(); // cerrar modal
+            if (onRenovado) onRenovado();
+            onHide();
         } catch (error) {
             console.error("Error al renovar:", error);
             alert("Hubo un error al renovar la suscripción");
