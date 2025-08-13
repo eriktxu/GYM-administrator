@@ -1,129 +1,88 @@
-import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { registrarCliente } from "../../api/clientes";
 
-
 function ModalAgregarCliente({ show, handleClose, onClienteAgregado }) {
-    const [nombre, setNombre] = useState("");
-    const [correo, setCorreo] = useState("");
-    const [telefono, setTelefono] = useState("");
-    const [tipoSuscripcion, setTipoSuscripcion] = useState("Mensual");
-    const [password, setPassword] = useState("");
+    // ¡YA NO NECESITAMOS useState para cada campo!
 
-const handleGuardar = async (e) => {
-        // MUY IMPORTANTE: previene el refresco de página
-        e.preventDefault(); 
+    const handleGuardar = async (e) => {
+        // Prevenimos el comportamiento por defecto del formulario
+        e.preventDefault();
+
+        // 1. Creamos un objeto FormData a partir del evento del formulario
+        const formData = new FormData(e.target);
+
+        // 2. Convertimos FormData a un objeto JavaScript normal
+        const nuevoCliente = Object.fromEntries(formData.entries());
+
+        // 3. Pequeña transformación para la suscripción
+        nuevoCliente.tipo_suscripcion = nuevoCliente.tipo_suscripcion.toLowerCase();
         
-        // El resto de tu lógica se queda exactamente igual
-        if (!nombre || !correo || !telefono || !tipoSuscripcion || !password || password.length < 6) {
+        console.log("Datos que se van a enviar al backend:", nuevoCliente);
+
+        // 4. Validación (igual que antes)
+        if (!nuevoCliente.nombre || !nuevoCliente.correo || !nuevoCliente.telefono || !nuevoCliente.password || nuevoCliente.password.length < 6) {
             alert("Por favor, completa todos los campos. La contraseña debe tener al menos 6 caracteres.");
             return;
         }
 
         try {
-            const datosAEnviar = { /* ...tus datos... */ };
-            await registrarCliente(datosAEnviar);
+            await registrarCliente(nuevoCliente);
+
             alert("Cliente guardado correctamente ✅ ");
             handleClose();
-            // ... etc ...
+            if (onClienteAgregado) onClienteAgregado(); // Esto actualiza la lista sin recargar la página
+
         } catch (error) {
             console.error("Error al registrar cliente:", error);
-            alert("Hubo un error al registrar el cliente");
+            const mensajeError = error.response?.data?.error || "Hubo un error al registrar el cliente";
+            alert(mensajeError);
         }
-
-
-    try {
-        // 2. Añade la contraseña al objeto que se envía
-        await registrarCliente({
-            nombre,
-            correo,
-            telefono,
-            password, // <-- AÑADIR ESTA LÍNEA
-            tipo_suscripcion: tipoSuscripcion.toLowerCase()
-        });
-
-        alert("Cliente guardado correctamente ✅ ");
-        window.location.reload();
-
-        if (onClienteAgregado) onClienteAgregado();
-        handleClose();
-
-        // 3. Limpia también el estado de la contraseña
-        setNombre("");
-        setCorreo("");
-        setTelefono("");
-        setTipoSuscripcion("Mensual");
-        setPassword(""); // <-- AÑADIR ESTA LÍNEA
-    } catch (error) {
-        console.error("Error al registrar cliente:", error);
-        alert("Hubo un error al registrar el cliente");
-    }
-};
+    };
 
     return (
         <Modal show={show} onHide={handleClose} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>Agregar Cliente</Modal.Title>
             </Modal.Header>
-            <Modal.Body className="p-5">
-                <Form onSubmit={handleGuardar} id="form-agregar-cliente">
-                    {/* ... (todos tus Form.Group van aquí dentro como los tenías) ... */}
+            {/* El onSubmit ahora es el único responsable de la lógica */}
+            <Form onSubmit={handleGuardar}>
+                <Modal.Body className="p-5">
+                    {/* Asegúrate de que cada control tenga un 'name' */}
                     <Form.Group className="mb-3" controlId="formNombre">
                         <Form.Label>Nombre Completo</Form.Label>
-                        <Form.Control type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                        <Form.Control type="text" name="nombre" placeholder="Ej. Charles Leclerc" required />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formCorreo">
                         <Form.Label>Correo electrónico</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="Ej. charles@email.com"
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}
-                        />
+                        <Form.Control type="email" name="correo" placeholder="Ej. charles@email.com" required />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formPassword">
                         <Form.Label>Contraseña</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="Crea una contraseña segura"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <Form.Control type="password" name="password" placeholder="Mínimo 6 caracteres" required />
                     </Form.Group>
+
                     <Form.Group className="mb-3" controlId="formTelefono">
                         <Form.Label>Teléfono</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Ej. 55 1234 5678"
-                            value={telefono}
-                            onChange={(e) => setTelefono(e.target.value)}
-                        />
+                        <Form.Control type="text" name="telefono" placeholder="Ej. 55 1234 5678" required />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formTipo">
                         <Form.Label>Tipo de suscripción</Form.Label>
-                        <Form.Select
-                            value={tipoSuscripcion}
-                            onChange={(e) => setTipoSuscripcion(e.target.value)}
-                        >
+                        <Form.Select name="tipo_suscripcion" defaultValue="Mensual">
                             <option>Mensual</option>
                             <option>Trimestral</option>
                             <option>Semestral</option>
                             <option>Anual</option>
                         </Form.Select>
                     </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancelar
-                </Button>
-<Button variant="primary" type="submit" form="form-agregar-cliente">
-                    Guardar Cliente
-                </Button>
-            </Modal.Footer>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Cancelar</Button>
+                    <Button variant="primary" type="submit">Guardar Cliente</Button>
+                </Modal.Footer>
+            </Form>
         </Modal>
     );
 }
