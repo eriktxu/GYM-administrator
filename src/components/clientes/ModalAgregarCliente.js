@@ -10,28 +10,26 @@ function ModalAgregarCliente({ show, handleClose, onClienteAgregado }) {
     const [tipoSuscripcion, setTipoSuscripcion] = useState("Mensual");
     const [password, setPassword] = useState("");
 
-const handleGuardar = async () => {
-    // ...
-    try {
-        const datosAEnviar = {
-            nombre,
-            correo,
-            telefono,
-            password,
-            tipo_suscripcion: tipoSuscripcion.toLowerCase()
-        };
+const handleGuardar = async (e) => {
+        // MUY IMPORTANTE: previene el refresco de página
+        e.preventDefault(); 
+        
+        // El resto de tu lógica se queda exactamente igual
+        if (!nombre || !correo || !telefono || !tipoSuscripcion || !password || password.length < 6) {
+            alert("Por favor, completa todos los campos. La contraseña debe tener al menos 6 caracteres.");
+            return;
+        }
 
-        // --- AÑADE ESTA LÍNEA PARA DEPURAR ---
-        console.log("Datos que se van a enviar al backend:", datosAEnviar);
-        // ------------------------------------
-
-        await registrarCliente(datosAEnviar);
-
-        alert("Cliente guardado correctamente ✅ ");
-        // ... el resto de tu función
-    } catch (error) {
-        // ...
-    }
+        try {
+            const datosAEnviar = { /* ...tus datos... */ };
+            await registrarCliente(datosAEnviar);
+            alert("Cliente guardado correctamente ✅ ");
+            handleClose();
+            // ... etc ...
+        } catch (error) {
+            console.error("Error al registrar cliente:", error);
+            alert("Hubo un error al registrar el cliente");
+        }
 
 
     try {
@@ -68,15 +66,11 @@ const handleGuardar = async () => {
                 <Modal.Title>Agregar Cliente</Modal.Title>
             </Modal.Header>
             <Modal.Body className="p-5">
-                <Form>
+                <Form onSubmit={handleGuardar} id="form-agregar-cliente">
+                    {/* ... (todos tus Form.Group van aquí dentro como los tenías) ... */}
                     <Form.Group className="mb-3" controlId="formNombre">
                         <Form.Label>Nombre Completo</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Ej. Charles Leclerc"
-                            value={nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                        />
+                        <Form.Control type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formCorreo">
@@ -126,7 +120,7 @@ const handleGuardar = async () => {
                 <Button variant="secondary" onClick={handleClose}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleGuardar}>
+<Button variant="primary" type="submit" form="form-agregar-cliente">
                     Guardar Cliente
                 </Button>
             </Modal.Footer>
