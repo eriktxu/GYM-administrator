@@ -8,9 +8,10 @@ import Suscripciones from './components/suscripciones/Suscripciones';
 import Landing from './views/Landing';
 import DashboardGimnasio from './views/Dashborad';
 import DashboardCliente from './views/Dashboard-cliente';
-import DashboardSuperadmin from './views/Dashboard-superadmin';
+
 import DietaCliente from './components/dieta/Dieta';
 import Register from './views/Register';
+import AdministrarGym from './components/superusuario/Gimnasios';
 
 import PrivateRoute from './components/routes/privateRoute';
 import PublicRoute from './components/routes/publicRoute';
@@ -56,7 +57,7 @@ function ApplicationRoutes() {
             </Route>
 
             <Route element={<PrivateRoute allowedRoles={[3]} />}>
-                <Route path="/superadmin" element={<Layout><DashboardSuperadmin /></Layout>} />
+                <Route path="/superadmin" element={<Layout><AdministrarGym /></Layout>} />
             </Route>
 
             {/* Catch-all */}
