@@ -9,6 +9,12 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // --- Modificado: Se agrega la validación del checkbox ---
+        if (!e.target.privacy?.checked) {
+            alert("Debes aceptar el aviso de privacidad para poder registrarte.");
+            return; // Detiene la función y muestra un error amigable
+        }
+
         const nombre = e.target.nombre.value;
         const correo = e.target.email.value;
         const telefono = e.target.telefono.value;
@@ -19,7 +25,7 @@ function Register() {
         try {
             const data = await registerGimnasio(nuevoCliente);
             alert(data.message);
-            navigate("/"); // redirige al login o a donde prefieras
+            navigate("/");
         } catch (error) {
             alert(error.message || "Error en el servidor");
         }
@@ -31,6 +37,7 @@ function Register() {
                 <div className="auth-login boxed-auth-wrap row register-boxed-auth-wrap row">
                     <h2 className="text-center mb-4">Registro</h2>
                     <form onSubmit={handleSubmit}>
+                        {/* ... campos de nombre, correo, teléfono y contraseña sin cambios ... */}
                         <div className="mb-3">
                             <label htmlFor="nombre" className="form-label fw-medium">
                                 Nombre completo
@@ -87,6 +94,23 @@ function Register() {
                             />
                         </div>
 
+                        {/* --- Nuevo: Checkbox de Aviso de Privacidad --- */}
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id="privacy"
+                                name="privacy" // Importante para acceder en handleSubmit
+                            />
+                            <label className="form-check-label" htmlFor="privacy">
+                                Acepto el{" "}
+                                <a href="/aviso.html" target="_blank" rel="noopener noreferrer">
+                                    aviso de privacidad
+                                </a>
+                            </label>
+                        </div>
+                        {/* --- Fin de la sección nueva --- */}
+
                         <button
                             type="submit"
                             className="btn btn-primary w-100 rounded-pill"
@@ -99,7 +123,7 @@ function Register() {
                         <h6 className="text-subtitle-1 text-grey100">
                             ¿Ya tienes cuenta?{" "}
                             <Link
-                                to="/Login"
+                                to="/"
                                 className="btn-link text-primary text-body-1 font-weight-medium opacity-1 ps-2"
                                 style={{ cursor: "pointer", textDecoration: "none" }}
                             >

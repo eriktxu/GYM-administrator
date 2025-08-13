@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useClientes } from "../api/perfil";
 import enfermedadesJSON from "../data/enfermedades.json";
 import restriccionesJSON from "../data/restricciones.json";
 import "../styles/perfil.css";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from '../config';
+
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null; // No hay token
+  }
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.id; // Retorna el ID del payload del token
+  } catch (error) {
+    console.error("Error al decodificar el token:", error);
+    return null; // Token inválido o malformado
+  }
+};
 
 function Perfil() {
-    const { clientes, loading, error } = useClientes();
-    const [clienteSeleccionado, setClienteSeleccionado] = useState("");
     const [formData, setFormData] = useState({
         edad: "",
         genero: "",
@@ -52,22 +65,30 @@ function Perfil() {
 const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!clienteSeleccionado) {
-        alert("Selecciona un cliente primero");
+    // Obtenemos el ID del usuario logueado desde el token
+    const userId = getUserIdFromToken();
+
+    if (!userId) {
+        alert("No se pudo identificar al usuario. Por favor, inicia sesión de nuevo.");
         return;
     }
 
-const payload = {
-    id: clienteSeleccionado,
-    ...formData
-};
+    // Creamos el payload con el ID del usuario y los datos del formulario
+    const payload = {
+        id: userId,
+        ...formData
+    };
 
-const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     try {
-        const response = await axios.post("http://localhost:3307/api/clientes/guardar", payload,{
-            headers: `Bearer ${token}`
+        // CORRECCIÓN: El formato de los headers en axios es un objeto
+        const response = await axios.post(`${API_BASE_URL}/api/clientes/guardar`, payload, {
+            headers: {
+                Authorization: `Bearer ${token}` 
+            }
         });
+        
         console.log("Respuesta del servidor:", response.data);
         alert("Perfil guardado correctamente.");
     } catch (error) {
@@ -81,29 +102,6 @@ const token = localStorage.getItem("token");
         <div className="container-fluid">
             <div className="form-container">
                 <h2 className="form-title">Perfil de Cliente</h2>
-
-                {loading ? (
-                    <p>Cargando clientes...</p>
-                ) : error ? (
-                    <p>Error al cargar clientes</p>
-                ) : (
-                    <div className="mb-3">
-                        <label className="form-label">Seleccionar cliente registrado</label>
-                        <select
-                            className="form-select"
-                            value={clienteSeleccionado}
-                            onChange={(e) => setClienteSeleccionado(e.target.value)}
-                            required
-                        >
-                            <option value="">-- Selecciona un cliente --</option>
-                            {clientes.map((cliente) => (
-                                <option key={cliente.id} value={cliente.id}>
-                                    {cliente.nombre} ({cliente.correo})
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit}>
                     <div className="row">
