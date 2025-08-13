@@ -8,37 +8,59 @@ function ModalAgregarCliente({ show, handleClose, onClienteAgregado }) {
     const [correo, setCorreo] = useState("");
     const [telefono, setTelefono] = useState("");
     const [tipoSuscripcion, setTipoSuscripcion] = useState("Mensual");
+    const [password, setPassword] = useState("");
 
-    const handleGuardar = async () => {
-        if (!nombre || !correo || !telefono || !tipoSuscripcion) {
-            alert("Por favor completa todos los campos");
-            return;
-        }
+const handleGuardar = async () => {
+    // ...
+    try {
+        const datosAEnviar = {
+            nombre,
+            correo,
+            telefono,
+            password,
+            tipo_suscripcion: tipoSuscripcion.toLowerCase()
+        };
 
-        try {
-            await registrarCliente({
-                nombre,
-                correo,
-                telefono,
-                tipo_suscripcion: tipoSuscripcion.toLowerCase()
-            });
+        // --- AÑADE ESTA LÍNEA PARA DEPURAR ---
+        console.log("Datos que se van a enviar al backend:", datosAEnviar);
+        // ------------------------------------
 
-            alert("Cliente guardado correctamente ✅ ");
-            window.location.reload();
+        await registrarCliente(datosAEnviar);
 
-            if (onClienteAgregado) onClienteAgregado(); // Para recargar la lista si aplicara
-            handleClose();
+        alert("Cliente guardado correctamente ✅ ");
+        // ... el resto de tu función
+    } catch (error) {
+        // ...
+    }
 
-            // Limpiar formulario
-            setNombre("");
-            setCorreo("");
-            setTelefono("");
-            setTipoSuscripcion("Mensual");
-        } catch (error) {
-            console.error("Error al registrar cliente:", error);
-            alert("Hubo un error al registrar el cliente");
-        }
-    };
+
+    try {
+        // 2. Añade la contraseña al objeto que se envía
+        await registrarCliente({
+            nombre,
+            correo,
+            telefono,
+            password, // <-- AÑADIR ESTA LÍNEA
+            tipo_suscripcion: tipoSuscripcion.toLowerCase()
+        });
+
+        alert("Cliente guardado correctamente ✅ ");
+        window.location.reload();
+
+        if (onClienteAgregado) onClienteAgregado();
+        handleClose();
+
+        // 3. Limpia también el estado de la contraseña
+        setNombre("");
+        setCorreo("");
+        setTelefono("");
+        setTipoSuscripcion("Mensual");
+        setPassword(""); // <-- AÑADIR ESTA LÍNEA
+    } catch (error) {
+        console.error("Error al registrar cliente:", error);
+        alert("Hubo un error al registrar el cliente");
+    }
+};
 
     return (
         <Modal show={show} onHide={handleClose} size="lg">
@@ -67,6 +89,15 @@ function ModalAgregarCliente({ show, handleClose, onClienteAgregado }) {
                         />
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control
+                            type="password"
+                            placeholder="Crea una contraseña segura"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Form.Group>
                     <Form.Group className="mb-3" controlId="formTelefono">
                         <Form.Label>Teléfono</Form.Label>
                         <Form.Control
