@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import '../styles/landing/landing.css';
 import '../styles/landing/nicepage.css'
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
 
   const [planType, setPlanType] = useState('mensual');
 
+  const navigate = useNavigate();
+
+  const irRegistro = () => {
+    navigate("/registro");
+  }
+
   const planes = {
+
     mensual: [
       {
         nombre: 'Básico',
@@ -244,7 +252,7 @@ export default function Landing() {
                     <li key={i}>{beneficio}</li>
                   ))}
                 </ul>
-                <button className="u-btn u-button-style u-palette-1-base u-hover-white u-text-white">
+                <button onClick={irRegistro} className="u-btn u-button-style u-palette-1-base u-hover-white u-text-white">
                   Elige este plan
                 </button>
               </div>

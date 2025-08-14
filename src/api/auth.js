@@ -22,15 +22,16 @@ export async function login(correo, password) {
   }
 }
 
-export async function registerGimnasio(nuevoCliente) {
+export async function registerGimnasio(nuevoGimnasio) {
   try {
-
+    const token = localStorage.getItem("token"); // obtener token
     const response = await fetch(`${API_BASE_URL}/api/superadmin/registerGimnasio`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // agregar token
       },
-      body: JSON.stringify(nuevoCliente),
+      body: JSON.stringify(nuevoGimnasio),
     });
 
     const data = await response.json();
