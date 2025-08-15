@@ -74,7 +74,8 @@ function Dieta() {
       });
       
       // Guardamos los datos de la dieta en el estado del componente
-      setPlanIA(response.data.dieta);
+      setPlanIA(response.data);
+
 
     } catch (err) {
       console.error("Error al generar el plan con IA:", err);
@@ -85,64 +86,91 @@ function Dieta() {
   };
 
   return (
-    <div className="card mb-4">
-      <div className="card-body p-4">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-          Generar Plan Personalizado
-        </h2>
-        
-        {/* 3. BOTONES Y LÓGICA DE UI */}
-        <div className="d-flex gap-3 mb-4">
-          <button
-            onClick={generarPDFOriginal}
-            className="btn btn-secondary"
-            disabled={loading} // Deshabilitamos el botón mientras carga
-          >
-            {loading ? 'Generando...' : '📄 Plan Estándar (PDF)'}
-          </button>
-          
-          {/* Este es tu nuevo botón */}
-          <button
-            onClick={generarPlanConIA}
-            className="btn btn-danger"
-            disabled={loading}
-          >
-            {loading ? 'Generando...' : '✨ Plan con IA (Nuevo)'}
-          </button>
+        <div className="card mb-4">
+            <div className="card-body p-4">
+                <h2 className="text-3xl font-semibold text-gray-800 mb-4">
+                    Generar Plan Personalizado
+                </h2>
+                
+                <div className="d-flex gap-3 mb-4">
+                    <button onClick={generarPDFOriginal} className="btn btn-secondary" disabled={loading}>
+                        {loading ? 'Generando...' : '📄 Plan Estándar (PDF)'}
+                    </button>
+                    <button onClick={generarPlanConIA} className="btn btn-danger" disabled={loading}>
+                        {loading ? 'Generando...' : '✨ Plan con IA (Nuevo)'}
+                    </button>
+                </div>
+
+                {loading && <p className="text-info">Generando tu plan semanal, esto puede tardar un momento...</p>}
+                {error && <p className="text-danger">{error}</p>}
+                
+                {planIA && (
+                    <>
+                        {/* Mostramos la dieta semanal */}
+                        {planIA.dieta && (
+                            <div className="mt-4 p-4 border rounded bg-light">
+                                <h3 className="text-2xl font-semibold mb-3">Tu Dieta Semanal Personalizada</h3>
+                                {planIA.dieta.map((diaPlan, index) => (
+                                    <div key={index} className="mb-4 p-3 border-bottom">
+                                        <h4 className="text-xl font-bold">{diaPlan.dia}</h4>
+                                        <div className="mt-2">
+                                            <p><strong>Desayuno:</strong> {diaPlan.desayuno.platillo}</p>
+                                            <p className="text-muted small">Ingredientes: {diaPlan.desayuno.ingredientes.join(', ')}</p>
+                                        </div>
+                                        <div className="mt-2">
+                                            <p><strong>Almuerzo:</strong> {diaPlan.almuerzo.platillo}</p>
+                                            <p className="text-muted small">Ingredientes: {diaPlan.almuerzo.ingredientes.join(', ')}</p>
+                                        </div>
+                                        <div className="mt-2">
+                                            <p><strong>Cena:</strong> {diaPlan.cena.platillo}</p>
+                                            <p className="text-muted small">Ingredientes: {diaPlan.cena.ingredientes.join(', ')}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Mostramos la rutina semanal */}
+                        {planIA.rutina && (
+                            <div className="mt-4 p-4 border rounded bg-light">
+                                <h3 className="text-2xl font-semibold mb-3">Tu Rutina Semanal Personalizada</h3>
+                                {planIA.rutina.map((diaRutina, index) => (
+                                    <div key={index} className="mb-4 p-3 border-bottom">
+                                        <h4 className="text-xl font-bold">{diaRutina.dia} - <span className="text-danger">{diaRutina.nombre_rutina}</span></h4>
+                                        <p className="text-muted">Enfoque: {diaRutina.enfoque}</p>
+                                        {diaRutina.ejercicios && diaRutina.ejercicios.length > 0 ? (
+                                            <table className="table table-striped mt-3">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ejercicio</th>
+                                                        <th>Series</th>
+                                                        <th>Repeticiones</th>
+                                                        <th>Descanso</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {diaRutina.ejercicios.map((ejercicio, ejIndex) => (
+                                                        <tr key={ejIndex}>
+                                                            <td>{ejercicio.nombre}</td>
+                                                            <td>{ejercicio.series}</td>
+                                                            <td>{ejercicio.repeticiones}</td>
+                                                            <td>{ejercicio.descanso_seg} seg</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <p className="mt-2">Día de descanso.</p>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
-
-        {/* Mensajes de carga y error */}
-        {loading && <p className="text-info">Generando tu plan, por favor espera...</p>}
-        {error && <p className="text-danger">{error}</p>}
-        
-        {/* 4. MOSTRAR EL RESULTADO DE LA IA */}
-        {/* Esta sección solo aparece si 'planIA' tiene datos */}
-        {planIA && (
-          <div className="mt-4 p-4 border rounded bg-light">
-            <h3 className="text-2xl font-semibold mb-3">Tu Dieta Personalizada por IA</h3>
-            
-            <div className="mb-3">
-              <h4 className="font-bold">Desayuno</h4>
-              <p><strong>Platillo:</strong> {planIA.desayuno.platillo}</p>
-              <p><strong>Ingredientes:</strong> {planIA.desayuno.ingredientes.join(', ')}</p>
-            </div>
-
-            <div className="mb-3">
-              <h4 className="font-bold">Almuerzo</h4>
-              <p><strong>Platillo:</strong> {planIA.almuerzo.platillo}</p>
-              <p><strong>Ingredientes:</strong> {planIA.almuerzo.ingredientes.join(', ')}</p>
-            </div>
-
-            <div>
-              <h4 className="font-bold">Cena</h4>
-              <p><strong>Platillo:</strong> {planIA.cena.platillo}</p>
-              <p><strong>Ingredientes:</strong> {planIA.cena.ingredientes.join(', ')}</p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+    );
+};
 
 export default Dieta;
